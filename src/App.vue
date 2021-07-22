@@ -5,8 +5,8 @@
         <br />
         <div class="row">
             <div class="col-md-12 text-center">
-                <TranslateForm />
-                <h3 class="text-success text-center"></h3>
+                <TranslateForm @translatedEvent="translatedText = $event" />
+                <h3 class="text-success text-center">{{ translatedText }}</h3>
                 <SearchHistory />
             </div>
         </div>
@@ -16,6 +16,11 @@
 import TranslateForm from "./components/TranslateForm";
 import SearchHistory from "./components/SearchHistory";
 export default {
+    data() {
+        return {
+            translatedText: "",
+        };
+    },
     components: {
         TranslateForm,
         SearchHistory,
