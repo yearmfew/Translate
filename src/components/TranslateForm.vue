@@ -16,6 +16,7 @@
         >
         </textarea>
         <select v-model="translateLanguage" class="form-control">
+            <option value="" disabled selected>Select Language</option>
             <option v-for="(value, key) in languages" :value="key" :key="key">
                 {{ value }}
             </option>
