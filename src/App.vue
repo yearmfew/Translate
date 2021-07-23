@@ -1,60 +1,116 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
-  </div>
+    <div class="container-fluid">
+        <h1 class="text-center">Simple Translator</h1>
+        <h5 class="text-center">with Vue.js & Yandex Api</h5>
+        <br />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <ul class="nav nav-pills">
+                        <li @click="chooseLang($event)">
+                            <a id="tr" class="language" :class="isActive">
+                                Türkish
+                            </a>
+                        </li>
+                        <li @click="chooseLang($event)">
+                            <a id="en" class="language" href="#"> English </a>
+                        </li>
+                        <li @click="chooseLang($event)">
+                            <a id="de" class="language" href="#"> German </a>
+                        </li>
+                        <li @click="chooseLang($event)">
+                            <a
+                                id="choosenFromSelect"
+                                class="language"
+                                href="#"
+                                >{{ translatedLang }}</a
+                            >
+                        </li>
+                    </ul>
+                    <TranslateForm
+                        @translatedEvent="translatedText = $event"
+                        @historyEvent="history.push($event)"
+                        @translateLangEvent="translatedLang = $event"
+                        :choicedLang="choicedLang"
+                    />
+                </div>
+                <div class="col-md-6 well">
+                    <h3 class="text-success text-center">
+                        <span v-if="!translatedText">Translation</span>
+                        {{ translatedText }}
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="row search">
+            <SearchHistory :history="history" />
+        </div>
+    </div>
 </template>
-
 <script>
-export default {
-  name: 'app',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+import TranslateForm from "./components/TranslateForm";
+import SearchHistory from "./components/SearchHistory";
+
+function styleTabs(id) {
+    // remove active
+    let items = document.getElementsByClassName("language");
+    for (let i = 0; i < items.length; i++) {
+        const element = items[i];
+        element.classList.remove("actived");
+        if (element.id == id) {
+            element.classList.add("actived");
+        }
     }
-  }
 }
+
+export default {
+    data() {
+        return {
+            translatedText: "",
+            history: [],
+            choicedLang: "tr",
+            isActive: "actived",
+            translatedLang: "",
+        };
+    },
+    components: {
+        TranslateForm,
+        SearchHistory,
+    },
+    methods: {
+        chooseLang(event) {
+            this.choicedLang = event.target.id;
+            // styling for active
+            styleTabs(event.target.id);
+        },
+    },
+    watch: {
+        translatedLang: () => {
+            styleTabs("choosenFromSelect");
+        },
+    },
+};
 </script>
-
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+    background-color: #dedede;
 }
 
-h1, h2 {
-  font-weight: normal;
+.actived {
+    background-color: #2c3e50 !important;
+    color: white !important;
 }
-
-ul {
-  list-style-type: none;
-  padding: 0;
+.nav {
+    background-color: #ecf0f1;
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px 0 0 0;
 }
-
-li {
-  display: inline-block;
-  margin: 0 10px;
+.row {
+    margin: 0;
 }
-
-a {
-  color: #42b983;
+.search {
+    margin-left: 30px;
+    margin-right: 25px;
 }
 </style>
