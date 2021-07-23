@@ -4,7 +4,6 @@ I have first watched a video tutorial about it and developed after the video tut
 I have added additional functionality like, tabs, delete option and some changes about the theme of the app. 
 The original video tutorial is Gökhan Kandemir's Udemy Vue.js course. 
 
-
 # How to run
 
 ## Project setup
